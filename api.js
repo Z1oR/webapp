@@ -7,6 +7,12 @@ const user = initData.user;
 
 console.log('Данные пользователя из Telegram:', user);
 
+// Тестовый запрос при загрузке страницы
+fetch('http://185.84.162.89:8000/test')
+    .then(response => response.json())
+    .then(data => console.log('Тестовый запрос успешен:', data))
+    .catch(error => console.error('Ошибка тестового запроса:', error));
+
 // Устанавливаем данные пользователя в профиле
 document.addEventListener('DOMContentLoaded', function() {
     if (user) {
@@ -58,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 console.log('Отправка запроса на создание платежной ссылки...');
                 
-                const response = await fetch('https://185.84.162.89:8000/create_link', {
+                const response = await fetch('http://185.84.162.89:8000/create_link', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
