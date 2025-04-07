@@ -1,34 +1,58 @@
 let tg = window.Telegram.WebApp;
 tg.expand();
 
-let user = tg.initData.user;
-let user_id = user.id;
-let user_username = user.username;
-let user_first_name = user.first_name;
-let user_last_name = user.last_name;
-let user_photo = user.photo_url;
+// Получаем данные пользователя из WebApp
+const initData = tg.initDataUnsafe;
+const user = initData.user;
 
-document.querySelector('#user_photo').src = user_photo || "./img/profile.svg";
-document.querySelector('#user_name').textContent = user_first_name + ' ' + user_last_name || "Пользователь";
+// Устанавливаем данные пользователя в профиле
+document.addEventListener('DOMContentLoaded', function() {
+    const userPhoto = document.querySelector('#user_photo');
+    const userName = document.querySelector('#user_name');
+    const userGamesPlayed = document.querySelector('#user_games_played');
 
+    // Устанавливаем фото профиля
+    if (user && user.photo_url) {
+        userPhoto.src = user.photo_url;
+    } else {
+        userPhoto.src = "./img/profile.svg";
+    }
+
+    // Устанавливаем имя пользователя
+    if (user) {
+        let fullName = user.first_name || '';
+        if (user.last_name) {
+            fullName += ' ' + user.last_name;
+        }
+        userName.textContent = fullName || "Пользователь";
+    }
+
+    // Получаем данные пользователя с сервера
+    if (user) {
+        getUserData();
+    }
+});
 
 function getUserData() {
-    fetch('https://api.example.com/user', {
+    fetch('http://185.84.162.89:8000/user', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            user_id: user_id
+            user_id: user.id,
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            photo_url: user.photo_url
         })
     })
     .then(response => response.json())
     .then(data => {
-        // Обработка полученных данных
         console.log('Данные пользователя получены:', data);
         
         // Обновляем количество сыгранных игр
-        document.querySelector('#user_games_played').textContent = `Сыграно: ${data.games_played}`;
+        document.querySelector('#user_games_played').textContent = `Сыграно: ${data.games_played || 0}`;
 
         // Обработка призов
         const giftsContainer = document.querySelector('.gifts__container');
@@ -63,26 +87,31 @@ function getUserData() {
     });
 }
 
-// getUserData();
-
-
-
-const playBtn = document.querySelector('.play-button');
-
-playBtn.addEventListener('click', () => {
-    fetch('http://185.84.162.89:8000/create_link')
-        .then(response => response.json())
-        .then(data => {
-            if (!data.error && data.link) {
-                // Открываем платежную ссылку
-                window.open(data.link, '_blank');
-            } else {
-                console.error('Ошибка при создании платежной ссылки');
+// Обработчик для кнопки игры
+document.addEventListener('DOMContentLoaded', function() {
+    const playButtons = document.querySelectorAll('.play-button');
+    
+    playButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            fetch('http://185.84.162.89:8000/create_link', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error && data.link) {
+                    window.open(data.link, '_blank');
+                } else {
+                    console.error('Ошибка при создании платежной ссылки');
+                    showNotification('Произошла ошибка при создании платежной ссылки');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при запросе платежной ссылки:', error);
                 showNotification('Произошла ошибка при создании платежной ссылки');
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка при запросе платежной ссылки:', error);
-            showNotification('Произошла ошибка при создании платежной ссылки');
+            });
         });
+    });
 });
