@@ -70,7 +70,7 @@ function getUserData() {
 const playBtn = document.querySelector('.play-button');
 
 playBtn.addEventListener('click', () => {
-    fetch('/create_link')
+    fetch('http://185.84.162.89:8000/create_link')
         .then(response => response.json())
         .then(data => {
             if (!data.error && data.link) {
