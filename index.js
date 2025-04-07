@@ -311,11 +311,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     tg.openInvoice(data.link);
                 } else {
                     console.error('Ошибка при создании платежной ссылки:', data.error);
-                    showNotification('Произошла ошибка при создании платежной ссылки');
+                    showNotification('Произошла ошибка при создании платежной ссылки', data.error);
                 }
             } catch (error) {
                 console.error('Ошибка при запросе платежной ссылки:', error);
-                showNotification('Произошла ошибка при создании платежной ссылки');
+                showNotification('Произошла ошибка при создании платежной ссылки', error);
             }
         });
     });
