@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style_additions.sass">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Developer Llncol</title>
@@ -47,36 +46,53 @@
             <h2>Лидеры</h2>
         </div>
         <div class="Leader__main">
-            <!-- Данные лидеров будут загружены из API -->
+            <div class="leader__item leader">
+                <img src="./img/leader.svg" alt="">
+                <p>1</p>
+                <p>awaitt</p>
+                <p>100 игр</p>
+            </div>
+            <div class="leader__item leader">
+                <img src="./img/leader.svg" alt="">
+                <p>2</p>
+                <p>Z1oR</p>
+                <p>63 игр</p>
+            </div>
+            <div class="leader__item leader">
+                <img src="./img/leader.svg" alt="">
+                <p>3</p>
+                <p>DLORE</p>
+                <p>23 игр</p>
+            </div>
         </div>
     </div>
 
     <div class="Screen__profile">
         <div class="profile__header">
             <div class="profile__avatar">
-                <img src="./img/profile.svg" alt="Аватар профиля">
+                <img id="user_photo" src="./img/profile.svg" alt="Загрузка...">
             </div>
             <div class="profile__info">
-                <h2>Загрузка...</h2>
-                <div class="profile__balance">
-                    <span class="stars-count">0</span> ⭐
-                </div>
-            </div>
-            <div class="profile__actions">
-                <button class="history-btn">История действий</button>
+                <h2 id="user_name">Загрузка...</h2>
+                <p id="user_games_played">Сыграно: загрузка...</p>
             </div>
         </div>
+        
         
         <div class="profile__gifts">
             <div class="gifts__container">
                 <div class="gifts__icon">
                     <img src="./img/folder.svg" alt="Папка">
                 </div>
-                <h3>Нет нераспределённых призов</h3>
+                <!-- <h3>Нет нераспределённых призов</h3> -->
+                <h3>Загрузка..</h3>
             </div>
         </div>
     </div>
 
+
+
+    
     <div class="Main__footer">
         <div class="leader-btn menuBtn">
             <img src="./img/leader.svg" alt=" ">
@@ -92,7 +108,8 @@
         </div>
     </div>
 
-    <script src="telegram.js"></script>
+
+    <script src="api.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
