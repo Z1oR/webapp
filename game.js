@@ -92,7 +92,7 @@ async function saveGameStats(score) {
     if (!token || !userId) return;
 
     try {
-        const response = await fetch('http://localhost:5000/save_game_stats', {
+        const response = await fetch('http://185.84.162.89:5000/save_game_stats', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -103,7 +103,7 @@ async function saveGameStats(score) {
 
         if (response.ok) {
             // Обновляем таблицу лидеров после сохранения
-            const leaderboardResponse = await fetch(`http://localhost:5000/statistics/leaderboard/${userId}`, {
+            const leaderboardResponse = await fetch(`http://185.84.162.89:5000/statistics/leaderboard/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (token && userId) {
         try {
             // Получаем данные пользователя и таблицу лидеров
-            const response = await fetch(`http://localhost:5000/statistics/leaderboard/${userId}`, {
+            const response = await fetch(`http://185.84.162.89:5000/statistics/leaderboard/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
