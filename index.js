@@ -1,319 +1,258 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const gameSelect = document.getElementById('game-select');
-    const demoModeCheckbox = document.querySelector('.Demo-mode input[type="checkbox"]');
-    const gameContainers = {
-        'stars50': document.querySelector('.stars50Game'),
-        'stars100': document.querySelector('.stars100Game'),
-        'coder5dollar': document.querySelector('.coder5dollarGame'),
-        'coder20dollar': document.querySelector('.coder20dollarGame')
-    };
-    
-    // btn footer
-    const leaderBtn = document.querySelector('.leader-btn');
-    const gamesBtn = document.querySelector('.games-btn');
-    const profileBtn = document.querySelector('.profile-btn');
+let startBtn = document.querySelector(".StartScreen_image")
+let start_screen = document.querySelector(".newStartScreen__")
+let game__Dino = document.querySelector(".game__Dino")
 
-    // screens
-    const Screen__leaderboard  = document.querySelector('.Screen__leaderboard');
-    const Screen__main  = document.querySelector('.Screen__main');
-    const Screen__profile  = document.querySelector('.Screen__profile');
-    
-    // История действий
-    const historyBtn = document.querySelector('.history-btn');
-    if (historyBtn) {
-        historyBtn.addEventListener('click', function() {
-            showNotification('История действий будет доступна в следующем обновлении');
-        });
-    }
-    
-    // Переключение экранов
-    leaderBtn.addEventListener('click', function() {
-        Screen__leaderboard.style.display = 'flex';
-        Screen__main.style.display = 'none';
-        Screen__profile.style.display = 'none';
-        
-        // Загружаем лидерборд при переключении на его экран
-        if (typeof loadLeaderboard === 'function') {
-            loadLeaderboard();
-        }
-
-        //add class active to btn
-        leaderBtn.classList.add('active');
-        gamesBtn.classList.remove('active');
-        profileBtn.classList.remove('active');
-    });
-    
-    gamesBtn.addEventListener('click', function() {
-        Screen__main.style.display = 'flex';
-        Screen__leaderboard.style.display = 'none';
-        Screen__profile.style.display = 'none';
-
-        // add class active to btn
-        gamesBtn.classList.add('active');
-        leaderBtn.classList.remove('active');
-        profileBtn.classList.remove('active');
-    });
-    
-    profileBtn.addEventListener('click', function() {
-        Screen__main.style.display = 'none';
-        Screen__leaderboard.style.display = 'none';
-        Screen__profile.style.display = 'flex';
-        
-        // Обновляем данные профиля при переключении на него
-        if (typeof getUserPrizes === 'function' && typeof user !== 'undefined' && user.isAuthorized) {
-            getUserPrizes();
-        }
-
-        // add class active to btn
-        profileBtn.classList.add('active');
-        gamesBtn.classList.remove('active');
-        leaderBtn.classList.remove('active');
-    });
-
-    // Списки призов
-    const prizes = {
-        'stars50': ['10 звезд', '15 звезд', '20 звезд', '25 звезд', '30 звезд', '50 звезд'],
-        'stars100': ['20 звезд', '30 звезд', '40 звезд', '50 звезд', '70 звезд', '100 звезд'],
-        'coder5dollar': ['простой телеграм бот', 'простой телеграм бот + webApp', 'Сайт визитка', 'простая игра', 'простой сервер', 'Простая версия бота для тим по трафику'],
-        'coder20dollar': ['сложный сайт', 'Тг бот с webApp', 'тг бот с системой оплаты', 'Игра на JS', 'Сложный сервер на python', "Сложная версия бота для тим по трафику"]
-    };
-    
-    // Создаем модальное окно для призов
-    const modal = document.createElement('div');
-    modal.className = 'prize-modal';
-    modal.innerHTML = `
-        <div class="prize-modal-content">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAsTAAALEwEAmpwYAAANtElEQVR4nO2de3BU1R3HPze7SQhJIIEQEvICAiLPgIrYEcFxLFqrtS21U9uptdP+0c7Ujp2xM7Z2nNqZdlrbmcIfrT7qWNuOzyKoWLBUoYgVBUQJj/BiCQh5QEIC5LG7e/vHZm2W3Ox9nHvuPfl+ZnZ2s+fce37n/O75nfM7j3NAURRFURRFURRFURRFURRFUZRMJid6AklmBPANoBq4CLgMKARGAYXA8OBvTgMngBagEWgADgP7gb3AbuCc75rbiApgKbAFOAtETnMW2Bwsc6SvOfKXXGA1sB3nDY9lDLCNYGc8GyzD7NQwPzgXeAY4ibeN3384CbwIzPcxb77wbeA4/jd+pDk+GCxztpMDvINciw8CrwDfBWYB+UCJlMJAKfD5YJk7pPT7XtGT9MEy4FfAeIn8lkrliuCwPrB9vwi8AZwSyG+U1cAJ/DfkVHBsqBbVmVRKiW9sf4+Sq4TyRXWVLlYDnyGrd18wpXwKrBDUm3IWIF9hU8lFwIKBKimdzQeGkL1XfzTD2FDdpewIcDeyldKWCeaVQIIKYCu56/QNZzq5wGb0zR/OBmBolLpKCxai3/xYNsaob6e4LJhJuj3W0aZHPTuTRjVwFb/KVzMYPxOoj3ZB0jz2CnSGb7jZFiMPkRlAJbCU3qMBn+V7YQT+HwQZCXwZ+AuwF+fu35FgPfYALwc/M1RQ36F5gObkl8N3RgPTgDJgLFBC79k9HGgDOolOyugmemQ4Gvx3aE5gG/AocAA4YlrJicCdwArgGoNyTXECqCN6FBjMBcAYoD2YBOM3E4C7gIeAawXlmqQN+CPwc+BjE8JCRn4AWAxUIzffbxK5wFbgruj/6McO4DHgMQydEcxHvhGmiOkiw3HgJ8BvTemxFvkKuVhan4zgX5jb8nwP8s1wqbQuGcHPMNMBoxpBT7LnGJoqYgHwyRBeP6SBjf+G8OZkP9Ai2PlrMBcdytIGzvLlGZA7P0Fu4hNM6JPhXB583zjqRY4A1wdl3wvUCheaLbTROxO41UDZ85FbxbvOgNxs4mDvf1zE0ChgC/YrPZTnkWBG6WXAEftVHgrHgYkGZC4gOk3bfoWHwml6F8tMcq7TvsG70LFN9MpC3v1rH0nfcwaSG12kR4wY70F9YZJVKgBhVADCqACEUQEIowIQRgUgjApAGBWAMCoAYVQAwqgAhFEBCKMCEEYFIIwKQBgVgDAqAGFUAMKoAIRRAQijAhBGBSCMCkAYFYAwKgBhVADCqACEUQEIowIQRgUgjApAGBWAMCoAYVQAwqgAhFEBCKMCEEYFIIwKQBgVgDAqAGFUAMKoAIRRAQijAhBGBSCMCkAYFYAwKgBhVADCqACEUQEIowIQRgUgjApAGBWAMCoAYVQAwqgAhFEBCKMCEEYFIIwKQBgVgDAqAGFUAMKoAIRRAQijAhBGBSCMCkAYFYAwKgBhVADCqACEUQEIowIQRgUgjApAGBWAMCoAYVQAwqgAhFEBCJMJAvCr3tkT1aM3AEPxqeJyAM8qP7u4P+h3yVMGTCB6QvhkosfTJwNlRIVdGky7Dmgl9mngPcAu4CTRUz+K0s//AR1gPDRGVgx9AAAAAElFTkSuQmCC" alt="Подарок" class="prize-img">
-            <h2>Вы выиграли подарок!</h2>
-            <p class="prize-name"></p>
-            <p class="prize-description">Демо-режим нужен для тестирования шансов выпадения подарков.</p>
-            <div class="prize-buttons">
-                <button class="demo-mode-btn">Отключить демо-режим</button>
-                <button class="sell-prize-btn">Продать подарок</button>
-                <button class="take-prize-btn">Забрать подарок</button>
-                <button class="get-service-btn">Получить услугу</button>
-                <button class="save-service-btn">Сохранить в профиле</button>
-                <button class="close-modal-btn">Закрыть</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    
-    // Получаем все кнопки в модальном окне
-    const demoModeBtn = modal.querySelector('.demo-mode-btn');
-    const sellPrizeBtn = modal.querySelector('.sell-prize-btn');
-    const takePrizeBtn = modal.querySelector('.take-prize-btn');
-    const getServiceBtn = modal.querySelector('.get-service-btn');
-    const saveServiceBtn = modal.querySelector('.save-service-btn');
-    const closeModalBtn = modal.querySelector('.close-modal-btn');
-    
-    // Обработчики для кнопок модального окна
-    demoModeBtn.addEventListener('click', function() {
-        demoModeCheckbox.checked = false;
-        modal.style.display = 'none';
-    });
-    
-    sellPrizeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-        // Логика продажи подарка теперь в telegram.js
-    });
-    
-    takePrizeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-        showNotification('Приз добавлен в ваш профиль!');
-    });
-    
-    getServiceBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-        showNotification('Свяжитесь с администратором для получения услуги');
-    });
-    
-    saveServiceBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-        // Логика сохранения услуги теперь в telegram.js
-    });
-    
-    closeModalBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-    
-    // Создание рулеток для каждого типа игры
-    for (const gameType in prizes) {
-        const container = gameContainers[gameType];
-        
-        // Создаем контейнер для рулетки
-        const rouletteContainer = document.createElement('div');
-        rouletteContainer.className = 'roulette-container';
-        
-        // Создаем ленту рулетки
-        const rouletteStrip = document.createElement('div');
-        rouletteStrip.className = 'roulette-strip';
-        
-        // Создаем больше призов для плавного вращения
-        // Добавляем больше дубликатов призов для непрерывности
-        const repeatedPrizes = [];
-        for (let i = 0; i < 6; i++) {
-            repeatedPrizes.push(...prizes[gameType]);
-        }
-        
-        repeatedPrizes.forEach(prize => {
-            const prizeElement = document.createElement('div');
-            prizeElement.className = 'prize-item';
-            prizeElement.textContent = prize;
-            rouletteStrip.appendChild(prizeElement);
-        });
-        
-        rouletteContainer.appendChild(rouletteStrip);
-        
-        // Добавляем стрелку-указатель
-        const pointer = document.createElement('div');
-        pointer.className = 'pointer';
-        rouletteContainer.appendChild(pointer);
-        
-        // Создаем кнопку для запуска рулетки
-        const playButton = document.createElement('button');
-        playButton.className = 'play-button';
-        playButton.textContent = 'Крутить';
-        playButton.dataset.gameType = gameType;
-        
-        // Обработчик для кнопки добавляется в telegram.js
-        
-        // Добавляем всё в контейнер игры
-        container.appendChild(rouletteContainer);
-        container.appendChild(playButton);
-        
-        // Скрываем все рулетки изначально
-        container.style.display = 'none';
-    }
-    
-    // Показываем рулетку для выбранной игры
-    function showSelectedGame() {
-        const selectedGame = gameSelect.value;
-        
-        // Скрываем все рулетки
-        for (const gameType in gameContainers) {
-            gameContainers[gameType].style.display = 'none';
-        }
-        
-        // Показываем выбранную рулетку
-        gameContainers[selectedGame].style.display = 'flex';
-    }
-    
-    // Вспомогательная функция для отображения уведомлений
-    // (Основная реализация в telegram.js)
-    function showNotification(message) {
-        if (typeof window.showNotification === 'function') {
-            window.showNotification(message);
-        } else {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.classList.add('fade-out');
-                setTimeout(() => {
-                    notification.remove();
-                }, 500);
-            }, 2500);
-        }
-    }
-    
-    // Обрабатываем изменение выбранной игры
-    gameSelect.addEventListener('change', showSelectedGame);
-    
-    // Показываем первоначально выбранную игру
-    showSelectedGame();
-});
-
+let screen = 0;
+let currentUser = null;
+let isAuthenticated = false;
 
 let tg = window.Telegram.WebApp;
-tg.expand();
 
-// Получаем данные пользователя из WebApp
-const initData = tg.initDataUnsafe;
-const user = initData.user;
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', async () => {
+    // Инициализация Telegram Mini App
+    tg.ready();
+    tg.expand();
 
-console.log('Данные пользователя из Telegram:', user);
+    // Получаем данные пользователя из Telegram
+    const user = {
+        id: tg.initDataUnsafe.user.id,
+        username: tg.initDataUnsafe.user.username,
+        first_name: tg.initDataUnsafe.user.first_name,
+        photo_url: tg.initDataUnsafe.user.photo_url
+    };
 
-// Тестовый запрос при загрузке страницы
-fetch('http://185.84.162.89:8000/test')
-    .then(response => response.json())
-    .then(data => console.log('Тестовый запрос успешен:', data))
-    .catch(error => console.error('Ошибка тестового запроса:', error));
+    // Инициализируем пользователя на сервере
+    try {
+        const response = await fetch('http://localhost:5000/init_user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
 
-// Устанавливаем данные пользователя в профиле
-document.addEventListener('DOMContentLoaded', function() {
-    if (user) {
-        // Устанавливаем фото профиля
-        const userPhoto = document.querySelector('#user_photo');
-        if (user.photo_url) {
-            userPhoto.src = user.photo_url;
-            console.log('Установлено фото профиля:', user.photo_url);
-        } else {
-            userPhoto.src = "./img/profile.svg";
-            console.log('Установлено дефолтное фото профиля');
+        if (response.ok) {
+            currentUser = user;
+            updateUI(user);
+            loadLeaderboard();
         }
-
-        // Устанавливаем имя пользователя
-        const userName = document.querySelector('#user_name');
-        let fullName = user.first_name || '';
-        if (user.last_name) {
-            fullName += ' ' + user.last_name;
-        }
-        userName.textContent = fullName || "Пользователь";
-        console.log('Установлено имя пользователя:', fullName);
-
-        // Устанавливаем количество игр (пока что 0, так как нет сервера)
-        const userGamesPlayed = document.querySelector('#user_games_played');
-        userGamesPlayed.textContent = "Сыграно: 0";
-        console.log('Установлено количество игр: 0');
-
-        // Устанавливаем статус призов
-        const giftsContainer = document.querySelector('.gifts__container');
-        const giftsTitle = giftsContainer.querySelector('h3');
-        giftsTitle.textContent = 'Нет нераспределённых призов';
-        console.log('Установлен статус призов: нет призов');
-    } else {
-        console.log('Пользователь не авторизован в Telegram WebApp');
+    } catch (error) {
+        console.error('Error initializing user:', error);
     }
 });
 
-// Функция для показа уведомлений
-function showNotification(message) {
-    tg.showAlert(message);
+startBtn.addEventListener("click", () => {
+    screen++;
+    changeScreen()
+})
+
+game__Dino.addEventListener("click", () => {
+    if (!isAuthenticated) {
+        warning('Необходима авторизация', 'Пожалуйста, войдите в аккаунт', 3000);
+        screen = 1; // Переходим на экран авторизации
+        changeScreen();
+        return;
+    }
+    screen = 3; // Переходим на экран игры
+    changeScreen()  
+})
+
+function changeScreen() {
+    // Скрываем все экраны
+    start_screen.style.display = "none";
+    document.querySelector(".NextScreen").style.display = "none";
+    document.querySelector(".accountScreen").style.display = "none";
+    document.querySelector(".DinoGame__game").style.display = "none";
+    document.querySelector(".Developer__main").style.display = "none";
+    
+    if (screen == 0) {
+        start_screen.style.display = "flex";
+        document.querySelector(".Developer__main").style.display = "flex";
+    }
+    else if (screen == 1) {
+        document.querySelector(".NextScreen").style.display = "flex";
+    }
+    else if (screen == 2) {
+        if (!isAuthenticated) {
+            warning('Необходима авторизация', 'Пожалуйста, войдите в аккаунт', 3000);
+            screen = 1;
+            changeScreen();
+            return;
+        }
+        document.querySelector(".accountScreen").style.display = "flex";
+    }
+    else if (screen == 3) {
+        if (!isAuthenticated) {
+            warning('Необходима авторизация', 'Пожалуйста, войдите в аккаунт', 3000);
+            screen = 1;
+            changeScreen();
+            return;
+        }
+        document.querySelector(".DinoGame__game").style.display = "flex";
+        if (typeof window.initGame === 'function') {
+            window.initGame();
+        }
+    }
 }
 
-// Обработчик для кнопки игры
-document.addEventListener('DOMContentLoaded', function() {
-    const playButtons = document.querySelectorAll('.play-button');
-    
-    playButtons.forEach(button => {
-        button.addEventListener('click', async () => {
-            try {
-                const response = await fetch('https://185.84.162.89:8000/create_link', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Origin': 'https://web.telegram.org'
-                    }
-                });
-                
-                const data = await response.json();
-                
-                if (!data.error && data.link) {
-                    tg.openInvoice(data.link);
-                } else {
-                    console.error('Ошибка при создании платежной ссылки:', data.error);
-                    tg.showAlert('Произошла ошибка при создании платежной ссылки');
-                }
-            } catch (error) {
-                console.error('Ошибка при запросе платежной ссылки:', error);
-                tg.showAlert('Произошла ошибка при создании платежной ссылки');
+function warning(title, text, time){
+    const warningScreen = document.querySelector(".WarningScreen");
+    warningScreen.style.display = "flex";
+    document.querySelector(".headerWarning").textContent = title;
+    document.querySelector(".mainWarning").textContent = text;
+
+    // Устанавливаем длительность анимации полосы
+    warningScreen.style.setProperty('--warning-duration', `${time}ms`);
+
+    // Добавляем стиль для анимации
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes warning-timer {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        .WarningScreen::after {
+            animation: warning-timer var(--warning-duration) linear forwards;
+        }
+    `;
+    document.head.appendChild(style);
+
+    setTimeout(() => {
+        warningScreen.style.display = "none";
+        style.remove();
+    }, time);
+}
+
+let nextScreen = document.querySelector(".NextScreen")
+let authBtn = document.querySelector(".auth button")
+let regBtn = document.querySelector(".reg button") 
+let groupInput = document.querySelector(".group")
+let screenTitle = document.querySelector(".Screen__header__title")
+let authButton = document.querySelector(".Screen__footer__button_auth")
+let regButton = document.querySelector(".Screen__footer__button_reg")
+
+let isRegistration = false
+
+authBtn.addEventListener("click", () => {
+    isRegistration = false
+    groupInput.style.display = "none"
+    regButton.style.display = "none"
+    authButton.style.display = "block"
+    screenTitle.textContent = "войти в аккаунт"
+})
+
+regBtn.addEventListener("click", () => {
+    isRegistration = true
+    groupInput.style.display = "block" 
+    regButton.style.display = "block"
+    authButton.style.display = "none"
+    screenTitle.textContent = "регистрация"
+})
+
+// Обновление UI
+function updateUI(user) {
+    // Обновляем информацию о пользователе
+    const userAvatar = document.querySelector('.user-avatar');
+    const userName = document.querySelector('.user-name');
+
+    if (user.photo_url) {
+        userAvatar.src = user.photo_url;
+    } else {
+        userAvatar.src = 'https://telegram.org/img/t_logo.png';
+    }
+    userName.textContent = user.first_name || user.username || 'Гость';
+}
+
+// Загрузка таблицы лидеров
+async function loadLeaderboard() {
+    try {
+        const response = await fetch('http://localhost:5000/leaderboard');
+        if (response.ok) {
+            const data = await response.json();
+            updateLeaderboard(data.leaderboard);
+            
+            // Обновляем лучший счет пользователя
+            const userScore = data.leaderboard.find(item => item.user_id === currentUser.id);
+            if (userScore) {
+                document.querySelector('.best-score-value').textContent = userScore.score;
             }
-        });
+        }
+    } catch (error) {
+        console.error('Error loading leaderboard:', error);
+    }
+}
+
+// Обновление таблицы лидеров
+function updateLeaderboard(leaderboardData) {
+    const leaderboardList = document.querySelector('.leaderboard-list');
+    leaderboardList.innerHTML = '';
+
+    leaderboardData.forEach((entry, index) => {
+        const item = document.createElement('div');
+        item.className = 'leaderboard-item';
+        
+        const avatar = document.createElement('img');
+        avatar.className = 'leaderboard-avatar';
+        avatar.src = entry.photo_url || 'https://telegram.org/img/t_logo.png';
+        
+        const info = document.createElement('div');
+        info.className = 'leaderboard-info';
+        
+        const name = document.createElement('div');
+        name.className = 'leaderboard-name';
+        name.textContent = entry.first_name || entry.username || 'Гость';
+        
+        const score = document.createElement('div');
+        score.className = 'leaderboard-score';
+        score.textContent = `Счёт: ${entry.score}`;
+        
+        info.appendChild(name);
+        info.appendChild(score);
+        
+        item.appendChild(avatar);
+        item.appendChild(info);
+        
+        leaderboardList.appendChild(item);
     });
+}
+
+// Обработчики кнопок
+document.getElementById('leaderboard-btn').addEventListener('click', () => {
+    document.querySelector('.main-screen').classList.add('hidden');
+    document.querySelector('.leaderboard-screen').classList.remove('hidden');
+    loadLeaderboard();
 });
 
+document.getElementById('back-btn').addEventListener('click', () => {
+    document.querySelector('.leaderboard-screen').classList.add('hidden');
+    document.querySelector('.main-screen').classList.remove('hidden');
+});
+
+// Сохранение игровой статистики
+async function saveGameStats(score) {
+    if (!currentUser) return;
+    
+    try {
+        const response = await fetch('http://localhost:5000/save_game_stats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: currentUser.id,
+                score: score
+            })
+        });
+
+        if (response.ok) {
+            loadLeaderboard();
+        }
+    } catch (error) {
+        console.error('Error saving game stats:', error);
+    }
+}
+
+// Экспортируем функции для использования в game.js
+window.saveGameStats = saveGameStats;
 
