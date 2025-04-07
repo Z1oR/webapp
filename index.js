@@ -292,30 +292,25 @@ document.addEventListener('DOMContentLoaded', function() {
     playButtons.forEach(button => {
         button.addEventListener('click', async () => {
             try {
-                console.log('Отправка запроса на создание платежной ссылки...');
-                
-                const response = await fetch('http://185.84.162.89:8000/create_link', {
-                    method: 'GET',
+                const response = await fetch('https://185.84.162.89:8000/create_link', {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Origin': window.location.origin
+                        'Origin': 'https://web.telegram.org'
                     }
                 });
                 
-                console.log('Получен ответ от сервера:', response.status, response.statusText);
                 const data = await response.json();
-                console.log('Получены данные от сервера:', data);
                 
                 if (!data.error && data.link) {
-                    console.log('Открытие платежной ссылки:', data.link);
                     tg.openInvoice(data.link);
                 } else {
                     console.error('Ошибка при создании платежной ссылки:', data.error);
-                    showNotification('Произошла ошибка при создании платежной ссылки', data.error);
+                    tg.showAlert('Произошла ошибка при создании платежной ссылки');
                 }
             } catch (error) {
                 console.error('Ошибка при запросе платежной ссылки:', error);
-                showNotification('Произошла ошибка при создании платежной ссылки', error);
+                tg.showAlert('Произошла ошибка при создании платежной ссылки');
             }
         });
     });
