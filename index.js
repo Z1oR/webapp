@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Инициализируем пользователя на сервере
     try {
-        const response = await fetch('http://localhost:5000/init_user', {
+        const response = await fetch('http://185.84.162.89:5000/init_user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -167,7 +167,7 @@ function updateUI(user) {
 // Загрузка таблицы лидеров
 async function loadLeaderboard() {
     try {
-        const response = await fetch('http://localhost:5000/leaderboard');
+        const response = await fetch('http://185.84.162.89:5000/leaderboard');
         if (response.ok) {
             const data = await response.json();
             updateLeaderboard(data.leaderboard);
@@ -234,7 +234,7 @@ async function saveGameStats(score) {
     if (!currentUser) return;
     
     try {
-        const response = await fetch('http://localhost:5000/save_game_stats', {
+        const response = await fetch('http://185.84.162.89:5000/save_game_stats', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
