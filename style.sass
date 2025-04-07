@@ -1,0 +1,434 @@
+*
+    background-color: #17212B
+    color: white
+    margin: 0
+    padding: 0
+
+    
+.switch 
+    position: relative
+    display: inline-block
+    width: 60px
+    height: 34px
+
+.switch input 
+    display: none
+
+.slider 
+    position: absolute
+    cursor: pointer
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background-color: #ccc
+    -webkit-transition: .4s
+    transition: .4s
+    &:before 
+        position: absolute
+        content: ""
+        height: 26px
+        width: 26px
+        left: 4px
+        bottom: 4px
+        background-color: white
+        -webkit-transition: .4s
+        transition: .4s
+
+input:checked + .slider 
+    background-color: #2196F3
+
+input:focus + .slider 
+    box-shadow: 0 0 1px #2196F3
+
+input:checked + .slider:before 
+    -webkit-transform: translateX(26px)
+    -ms-transform: translateX(26px)
+    transform: translateX(26px)
+
+.slider.round 
+    border-radius: 34px
+    &:before 
+        border-radius: 50%
+
+.Screen__main
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 100%
+    margin-left: auto
+    
+    .Main__header
+        width: 100%
+        display: flex
+        justify-content: center
+        margin-top: 30px
+        position: fixed
+        top: 0
+        left: 50%
+        transform: translateX(-50%)
+        z-index: 100
+        background-color: #17212B
+        padding: 10px
+
+        .Value__Chooise
+            display: flex
+            flex-direction: row
+            
+            select
+                margin-top: 10px
+                background-color: #17212B
+                border: 1px solid #054b91
+                padding: 5px
+                border-radius: 5px
+                
+        .Demo-mode
+            display: flex
+            flex-direction: row
+            margin-left: 20px
+            h3
+                margin-right: 10px
+
+.Main__footer
+    position: absolute
+    bottom: 0
+    display: flex
+    flex-direction: row
+    text-align: center
+    justify-content: space-between
+    width: 100%
+    
+    .leader-btn
+        margin-left: 30px
+        
+    .profile-btn
+        margin-right: 30px
+        
+    .menuBtn
+        display: flex
+        flex-direction: column
+        margin-bottom: 10px 
+
+    .active
+        border-top: 3px solid #054b91
+        
+
+.Main__Main
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    width: 100%
+    height: 100vh
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    
+    .roulette-title
+        color: #2196F3
+        margin-bottom: 20px
+        text-align: center
+        font-size: 24px
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5)
+
+    .stars50Game, .stars100Game, .coder5dollarGame, .coder20dollarGame
+        display: flex
+        flex-direction: column
+        align-items: center
+        width: 100%
+        max-width: 800px
+
+.roulette-container
+    position: relative
+    width: 90%
+    max-width: 700px
+    height: 150px
+    overflow: hidden
+    border: 2px solid #054b91
+    border-radius: 10px
+    margin: 20px 0
+    background-color: #0d1821
+
+.roulette-strip
+    display: flex
+    padding: 20px 0
+    transition: transform 4s cubic-bezier(0.1, 0.7, 0.1, 1)
+
+.prize-item
+    min-width: 150px
+    height: 100px
+    margin: 0 10px
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: #1e3a57
+    border-radius: 10px
+    padding: 10px
+    text-align: center
+    font-size: 18px
+    font-weight: bold
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5)
+
+.pointer
+    position: absolute
+    top: 0
+    left: 50%
+    transform: translateX(-50%)
+    width: 0
+    height: 0
+    border-left: 15px solid transparent
+    border-right: 15px solid transparent
+    border-top: 20px solid #ff0000
+    z-index: 10
+
+.play-button
+    margin-top: 20px
+    padding: 12px 30px
+    font-size: 18px
+    background-color: #2196F3
+    color: white
+    border: none
+    border-radius: 5px
+    cursor: pointer
+    transition: background-color 0.3s
+    font-weight: bold
+
+    &:hover
+        background-color: #0d8aed
+
+    &:disabled
+        background-color: #6c7a89
+        cursor: not-allowed
+
+// Модальное окно для призов
+.prize-modal
+    display: none
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100vh
+    background-color: rgba(0, 0, 0, 0.7)
+    backdrop-filter: blur(5px)
+    -webkit-backdrop-filter: blur(5px)
+    z-index: 1000
+    justify-content: center
+    align-items: center
+
+.prize-modal-content
+    background-color: #17212B
+    width: 320px
+    max-width: 90%
+    padding: 25px
+    border-radius: 15px
+    border: 2px solid #054b91
+    display: flex
+    flex-direction: column
+    align-items: center
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7)
+
+.prize-img
+    width: 120px
+    height: 120px
+    margin-bottom: 15px
+    background-color: transparent
+
+.prize-modal-content h2
+    color: white
+    font-size: 22px
+    margin-bottom: 10px
+    text-align: center
+
+.prize-name
+    color: #2196F3
+    font-size: 20px
+    font-weight: bold
+    margin-bottom: 15px
+    text-align: center
+
+.prize-description
+    color: #a0a0a0
+    font-size: 14px
+    text-align: center
+    margin-bottom: 20px
+
+.prize-buttons
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 10px
+
+.demo-mode-btn, 
+.sell-prize-btn, 
+.take-prize-btn, 
+.get-service-btn, 
+.save-service-btn,
+.close-modal-btn
+    padding: 12px 20px
+    width: 100%
+    border: none
+    border-radius: 5px
+    font-size: 16px
+    font-weight: bold
+    cursor: pointer
+    transition: background-color 0.3s, transform 0.2s
+    &:hover
+        transform: translateY(-2px)
+
+.demo-mode-btn
+    background-color: #2196F3
+    color: white
+    &:hover
+        background-color: #0d8aed
+
+.sell-prize-btn
+    background-color: #E91E63
+    color: white
+    &:hover
+        background-color: #C2185B
+
+.take-prize-btn
+    background-color: #4CAF50
+    color: white
+    &:hover
+        background-color: #388E3C
+
+.get-service-btn
+    background-color: #FF9800
+    color: white
+    &:hover
+        background-color: #F57C00
+
+.save-service-btn
+    background-color: #9C27B0
+    color: white
+    &:hover
+        background-color: #7B1FA2
+
+.close-modal-btn
+    background-color: #2c3e50
+    color: white
+    &:hover
+        background-color: #3e5871
+        
+// Стили для экрана профиля
+.Screen__profile
+    display: none
+    flex-direction: column
+    width: 100%
+    height: 100vh
+    padding-top: 20px
+    position: absolute
+    top: 0
+    left: 0
+    background-color: #17212B
+    
+    .profile__header
+        display: flex
+        flex-direction: column
+        align-items: center
+        padding: 20px
+        text-align: center
+        
+        .profile__avatar
+            width: 150px
+            height: 150px
+            border-radius: 50%
+            overflow: hidden
+            margin-bottom: 15px
+            border: 3px solid #2c3e50
+            
+            img
+                width: 100%
+                height: 100%
+                object-fit: cover
+                background-color: transparent
+        
+        .profile__info
+            h2
+                font-size: 24px
+                margin-bottom: 10px
+                
+            
+    
+    
+    
+    .profile__gifts
+        display: flex
+        justify-content: center
+        padding: 20px
+        margin-top: 20px
+        
+        .gifts__container
+            display: flex
+            flex-direction: column
+            align-items: center
+            text-align: center
+            background-color: #232E3C
+
+            padding: 20px
+            border-radius: 10px
+            .gifts__icon
+                width: 100px
+                height: 100px
+                margin-bottom: 15px
+                opacity: 0.6
+                background-color: #232E3C
+                img
+                    width: 100%
+                    height: 100%
+                    object-fit: contain
+                    background-color: transparent
+            
+            h3
+                background-color: #232E3C
+                color: #cacaca
+                font-weight: normal
+                font-size: 18px
+
+// Стили для экрана лидеров
+.Screen__leaderboard
+    display: none
+    flex-direction: column
+    width: 100%
+    height: 100vh
+    background-color: #17212B
+    
+    .Leader__header
+        text-align: center
+        padding: 20px
+        
+        h2
+            font-size: 24px
+            color: white
+    
+    .Leader__main
+        display: flex
+        flex-direction: column
+        align-items: center
+        
+        .leader__item
+            display: flex
+            align-items: center
+            padding: 15px
+            width: 90%
+            max-width: 500px
+            background-color: #1e3a57
+            border-radius: 10px
+            margin-bottom: 10px
+            
+            img
+                width: 40px
+                height: 40px
+                margin-right: 15px
+                background-color: transparent
+            
+            p
+                margin: 0 15px
+                background-color: #1e3a57
+                
+                &:first-of-type
+                    font-weight: bold
+                    color: #FFD700
+        

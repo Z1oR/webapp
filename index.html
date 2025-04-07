@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_additions.sass">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Llncol</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="Screen__main">
+        <div class="Main__header">
+            <div class="Value__Chooise">
+                <form>
+                  <label for="game-select"><h3>Выберите игру:</h3></label>
+                  <select name="game" id="game-select">
+                    <option value="stars50">50⭐ stars</option>
+                    <option value="stars100">100⭐ stars</option>
+                    <option value="coder5dollar">5$</option>
+                    <option value="coder20dollar">20$</option>
+                  </select>
+                </form>                  
+            </div>
+            <div class="Demo-mode">
+                <h3>Демо-режим</h3>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider round"></span>
+                  </label>
+            </div>
+        </div>
+
+        <div class="Main__Main">
+            <h2 class="roulette-title">Крутите рулетку и выигрывайте призы!</h2>
+            <div class="stars50Game"></div>
+             <div class="stars100Game"></div>
+             <div class="coder5dollarGame"></div>
+             <div class="coder20dollarGame"></div>
+             </div>
+        </div>
+        
+    </div>
+
+    <div class="Screen__leaderboard">
+        <div class="Leader__header">
+            <h2>Лидеры</h2>
+        </div>
+        <div class="Leader__main">
+            <!-- Данные лидеров будут загружены из API -->
+        </div>
+    </div>
+
+    <div class="Screen__profile">
+        <div class="profile__header">
+            <div class="profile__avatar">
+                <img src="./img/profile.svg" alt="Аватар профиля">
+            </div>
+            <div class="profile__info">
+                <h2>Загрузка...</h2>
+                <div class="profile__balance">
+                    <span class="stars-count">0</span> ⭐
+                </div>
+            </div>
+            <div class="profile__actions">
+                <button class="history-btn">История действий</button>
+            </div>
+        </div>
+        
+        <div class="profile__gifts">
+            <div class="gifts__container">
+                <div class="gifts__icon">
+                    <img src="./img/folder.svg" alt="Папка">
+                </div>
+                <h3>Нет нераспределённых призов</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="Main__footer">
+        <div class="leader-btn menuBtn">
+            <img src="./img/leader.svg" alt=" ">
+            <p>Лидеры</p>
+        </div>
+        <div class="games-btn menuBtn active">
+            <img src="./img/games.svg" alt=" ">
+            <p>Игры</p>
+        </div>
+        <div class="profile-btn menuBtn">
+            <img src="./img/profile.svg" alt=" ">
+            <p>Профиль</p>
+        </div>
+    </div>
+
+    <script src="telegram.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
