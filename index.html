@@ -1,116 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http: https: data: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://185.84.162.89:8000 https://t.me https://telegram.me">
-    <title>Developer Llncol</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ТЭПЧИК</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="Screen__main">
-        <div class="Main__header">
-            <div class="Value__Chooise">
-                <form>
-                  <label for="game-select"><h3>Выберите игру:</h3></label>
-                  <select name="game" id="game-select">
-                    <option value="stars50">50⭐ stars</option>
-                    <option value="stars100">100⭐ stars</option>
-                    <option value="coder5dollar">5$</option>
-                    <option value="coder20dollar">20$</option>
-                  </select>
-                </form>                  
-            </div>
-            <div class="Demo-mode">
-                <h3>Демо-режим</h3>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider round"></span>
-                  </label>
-            </div>
-        </div>
-
-        <div class="Main__Main">
-            <h2 class="roulette-title">Крутите рулетку и выигрывайте призы!</h2>
-            <div class="stars50Game"></div>
-             <div class="stars100Game"></div>
-             <div class="coder5dollarGame"></div>
-             <div class="coder20dollarGame"></div>
-             </div>
-        </div>
-        
-    </div>
-
-    <div class="Screen__leaderboard">
-        <div class="Leader__header">
-            <h2>Лидеры</h2>
-        </div>
-        <div class="Leader__main">
-            <div class="leader__item leader">
-                <img src="./img/leader.svg" alt="">
-                <p>1</p>
-                <p>awaitt</p>
-                <p>100 игр</p>
-            </div>
-            <div class="leader__item leader">
-                <img src="./img/leader.svg" alt="">
-                <p>2</p>
-                <p>Z1oR</p>
-                <p>63 игр</p>
-            </div>
-            <div class="leader__item leader">
-                <img src="./img/leader.svg" alt="">
-                <p>3</p>
-                <p>DLORE</p>
-                <p>23 игр</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="Screen__profile">
-        <div class="profile__header">
-            <div class="profile__avatar">
-                <img id="user_photo" src="./img/profile.svg" alt="Загрузка...">
-            </div>
-            <div class="profile__info">
-                <h2 id="user_name">Загрузка...</h2>
-                <p id="user_games_played">Сыграно: загрузка...</p>
-            </div>
-        </div>
-        
-        
-        <div class="profile__gifts">
-            <div class="gifts__container">
-                <div class="gifts__icon">
-                    <img src="./img/folder.svg" alt="Папка">
+    <div class="container">
+        <!-- Главный экран -->
+        <div class="main-screen">
+            <div class="header">
+                <div class="user-info">
+                    <img src="" alt="Avatar" class="user-avatar">
+                    <span class="user-name"></span>
                 </div>
-                <!-- <h3>Нет нераспределённых призов</h3> -->
-                <h3>Загрузка..</h3>
+                <div class="best-score">
+                    Рекорд: <span class="best-score-value">0</span>
+                </div>
             </div>
+            
+            <div class="game-container">
+                <div class="game">
+                    <div id="dino"></div>
+                    <div id="cactus"></div>
+                    <div id="score">0</div>
+                    <div id="game-over" class="hidden">
+                        <h2>Игра окончена!</h2>
+                        <p>Счёт: <span id="final-score">0</span></p>
+                        <button id="restart-btn" class="tg-button">Играть снова</button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="leaderboard-btn" class="tg-button">Таблица лидеров</button>
+        </div>
+
+        <!-- Таблица лидеров -->
+        <div class="leaderboard-screen hidden">
+            <div class="leaderboard-header">
+                <button id="back-btn" class="tg-button">Назад</button>
+                <h2>Таблица лидеров</h2>
+            </div>
+            <div class="leaderboard-list"></div>
         </div>
     </div>
 
-
-
-    
-    <div class="Main__footer">
-        <div class="leader-btn menuBtn">
-            <img src="./img/leader.svg" alt=" ">
-            <p>Лидеры</p>
-        </div>
-        <div class="games-btn menuBtn active">
-            <img src="./img/games.svg" alt=" ">
-            <p>Игры</p>
-        </div>
-        <div class="profile-btn menuBtn">
-            <img src="./img/profile.svg" alt=" ">
-            <p>Профиль</p>
-        </div>
-    </div>
-
-
-    <!-- <script src="api.js"></script> -->
     <script src="index.js"></script>
+    <script src="game.js"></script>
 </body>
 </html>
