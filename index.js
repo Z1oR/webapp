@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Отправка запроса на создание платежной ссылки...');
                 
                 const response = await fetch('http://185.84.162.89:8000/create_link', {
-                    method: 'POST',
+                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin
@@ -320,3 +320,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
